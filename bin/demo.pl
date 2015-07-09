@@ -27,6 +27,23 @@ __DATA__
 %= mdl_button label => 'Button Label';
 %= mdl_button icon => 'add', type => 'fab';
 
+<h2>textfields</h2>
+%= mdl_textfield label => 'Type a number', pattern => '[0-9]*', id => 'demo1', error => 'Not a number !';
+%= mdl_textfield label => 'With floating label', id => 'demo2', label_type => 'floating';
+
+<div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable
+ mdl-textfield--floating-label">
+  <label class="mdl-button mdl-js-button mdl-button--icon" for="search-expandable2">
+    <i class="material-icons">search</i>
+  </label>
+  <div class="mdl-textfield__expandable-holder">
+    <input class="mdl-textfield__input" type="text" id="search-expandable2" />
+    <label class="mdl-textfield__label" for="search-expandable2">
+      Enter search text below
+    </label>
+  </div>
+</div>
+
 
 @@ layouts/default.html.ep
 <!DOCTYPE html>

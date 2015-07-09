@@ -42,8 +42,9 @@ sub register
 {
     my ($self, $app) = @_;
     
-    $app->helper(mdl_badge  => sub { mdl_badge(@_) });
-    $app->helper(mdl_button => sub { mdl_button(@_) });
+    $app->helper(mdl_badge =>       sub { mdl_badge(@_)     });
+    $app->helper(mdl_button =>      sub { mdl_button(@_)    });
+    $app->helper(mdl_textfield =>   sub { mdl_textfield(@_) });
 }
 
 =head2 mdl_badge
@@ -105,6 +106,29 @@ sub mdl_icon
     my $icon = shift;
     
     my $str = '<i class="material-icons">' . $icon . '</i>';
+    
+    return (Mojo::ByteStream->new($str));
+}
+
+=head2 mdl_textfield
+
+=cut
+
+sub mdl_textfield
+{
+    my %attr = @_ % 2 ? (value => shift, @_) : @_;
+    my $id = $attr{id};
+    my $pattern = ($attr{pattern} ? ' pattern="' . $attr{pattern} . '"' : '');
+    my $label_type = ($attr{label_type} eq 'floating' 
+        ?  ' mdl-textfield--floating-label' : '');
+
+    my $str = '<div class="mdl-textfield mdl-js-textfield' . $label_type . '">'
+        . '<input class="mdl-textfield__input" type="text" id="' . $id . '"'
+        . $pattern . ' />'
+        . '<label class="mdl-textfield__label" for="' . $id . '">' 
+        . $attr{label} . '</label>'
+        . '<span class="mdl-textfield__error">' . $attr{error} . '</span>'
+        . '</div>';
     
     return (Mojo::ByteStream->new($str));
 }
