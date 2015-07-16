@@ -42,9 +42,11 @@ sub register
 {
     my ($self, $app) = @_;
     
-    $app->helper(mdl_badge =>       sub { mdl_badge(@_)     });
-    $app->helper(mdl_button =>      sub { mdl_button(@_)    });
-    $app->helper(mdl_textfield =>   sub { mdl_textfield(@_) });
+    $app->helper(mdl_badge      => sub { mdl_badge(@_)     });
+    $app->helper(mdl_button     => sub { mdl_button(@_)    });
+    $app->helper(mdl_slider     => sub { mdl_slider(@_)    });
+    $app->helper(mdl_switch     => sub { mdl_switch(@_)    });
+    $app->helper(mdl_textfield  => sub { mdl_textfield(@_) });
 }
 
 =head2 mdl_badge
@@ -92,7 +94,6 @@ sub mdl_button
     my $inner = ($attr{icon} ? mdl_icon($attr{icon}) : $attr{label});
     my $str = '<button class="mdl-button mdl-js-button mdl-button--' 
         . ${type} .'">' . $inner . '</button>';
-    say "button: $str";
     
     return (Mojo::ByteStream->new($str));
 }
@@ -107,6 +108,50 @@ sub mdl_icon
     
     my $str = '<i class="material-icons">' . $icon . '</i>';
     
+    return (Mojo::ByteStream->new($str));
+}
+
+=head2 mdl_slider
+
+    %= mdl_slider id => 'percentage', value => 80;
+    %= mdl_slider id => 'digit', min => 0, max => 9, step => 1, value => 3;
+
+=cut
+
+sub mdl_slider
+{
+    my %attr = @_ % 2 ? (value => shift, @_) : @_;
+    
+    my $id      = $attr{id} || 'slider';
+    my $min     = $attr{min} || 0;
+    my $max     = $attr{max} || 100;
+    my $step    = $attr{step} || 5;
+    my $value   = $attr{value} || 0;
+
+    my $str = '<input class="mdl-slider mdl-js-slider" type="range"' 
+        . ' id="' . $id . '" min="' . $min . '" max="' . $max . '"'
+        . ' value="' . $value . '" step="' . $step . '" />';
+
+    return (Mojo::ByteStream->new($str));
+}
+
+=head2 mdl_switch
+
+=cut
+
+sub mdl_switch
+{
+    my %attr = @_ % 2 ? (value => shift, @_) : @_;
+    
+    my $id      = $attr{id} || 'switch';
+    my $checked = ($attr{checked} ? 'checked ' : '');
+    my $label   = $attr{label} || '';
+
+    my $str = '<label class="mdl-switch mdl-js-switch mdl-js-ripple-effect"' 
+        . ' for="' . $id . '"><input type="checkbox" id="' . $id .'"'
+        . ' class="mdl-switch__input" ' . $checked . '/>'
+        . '<span class="mdl-switch__label">' . $label . '</span></label>';
+
     return (Mojo::ByteStream->new($str));
 }
 
